@@ -5,5 +5,5 @@ from website import urls as website_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'', include(website_urls))
+    url(r'', include(website_urls, namespace="website"))
 ]

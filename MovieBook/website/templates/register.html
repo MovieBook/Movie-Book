@@ -9,7 +9,7 @@
 
   {% endfor %}
 
-  <form action="{%url 'register' %}" method="post">{% csrf_token %}
+  <form action="{%url 'website:register' %}" method="post">{% csrf_token %}
   {{form}}
 
 
