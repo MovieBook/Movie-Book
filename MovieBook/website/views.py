@@ -18,9 +18,9 @@ def auth_view(request):
 
     if user is not None:
         auth.login(request, user)
-        return HttpResponseRedirect('/accounts/loggedin')
+        return HttpResponseRedirect('/loggedin')
     else:
-        return HttpResponseRedirect('/accounts/invalid')
+        return HttpResponseRedirect('/invalid')
 
 
 def loggedin(request):
@@ -42,7 +42,7 @@ def register_user(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/accounts/register_success')
+            return HttpResponseRedirect('/registration_success/')
     args = {}
     args.update(csrf(request))
     args['form'] = UserCreationForm()
@@ -56,3 +56,7 @@ def register_success(request):
 
 def about(request):
     return render_to_response('about.html')
+
+
+def index(request):
+    return render_to_response('index.html')
