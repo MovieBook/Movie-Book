@@ -5,8 +5,9 @@
   <h2>Your login details are invalid!</h2>
 
   <p>Click <a href="{%url 'website:login' %}">here</a> to login again.</p>
-  <form class="form-signin" action="{%url 'website:register' %}" method="post">
-  <input type="submit" class="btn btn-lg btn-primary btn-block" value="Регистрирай се" />
+  <a href="{%url 'website:register' %}">
+  <input class="btn btn-lg btn-primary btn-block" value="Регистрирай се" />
+  </a>
   {% csrf_token %}
 
 {% endblock %}
