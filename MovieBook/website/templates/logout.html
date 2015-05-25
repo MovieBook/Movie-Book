@@ -3,6 +3,8 @@
 {% block content %}
 
   <h2>Logged out!</h2>
+
   <p>Click <a href="{%url 'website:login' %}">here</a> to login again</p>
+   {% csrf_token %}
 
 {% endblock %}
