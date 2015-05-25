@@ -11,11 +11,9 @@
 
   <form action="{%url 'website:register' %}" method="post">{% csrf_token %}
   {{form}}
-
-
-
   <input type="submit" value="Register" />
 
   </form>
 
 {% endblock %}
+

@@ -6,14 +6,20 @@
     <p class="error">Sorry, that's not a valid username or password</p>
   {% endif %}
 
-  <form action="{%url 'website:authenticate' %}" method="post">{% csrf_token %}
-    <label for="username">User name:</label>
-    <input type="text" name="username" value="" id="username">
-    <label for="password">Password:</label>
-    <input type="password" name="password" value="" id="password">
+    <div class="container">
+      <form class="form-signin" action="{%url 'website:authenticate' %}" method="post">{% csrf_token %}
+      <h2 class="form-signin-heading"><center>Please sign in</center></h2>
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" name="username" placeholder="Потребителско име" value="" id="username">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control"name="password" placeholder="Парола" value="" id="password">
 
-    <input type="submit" value="login" />
 
-  </form>
-
+        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Влез" />
+      </form>
+      <a href="{%url 'website:register' %}">
+      <input class="btn btn-lg btn-primary btn-block" value="Регистрирай се" />
+      </a>
+    </div>
 {% endblock %}
+
