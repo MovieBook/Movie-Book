@@ -1,8 +1,8 @@
 from django.shortcuts import render_to_response, redirect
-# from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 def login(request):
@@ -23,7 +23,8 @@ def auth_view(request):
         return redirect('website:invalid_login')
 
 
-def loggedin(request):
+@login_required(login_url="website:login")
+def home(request):
     return render_to_response('loggedin.html',
                               {'full_name': request.user.username})
 
@@ -56,7 +57,3 @@ def register_success(request):
 
 def about(request):
     return render_to_response('about.html')
-
-
-def index(request):
-    return render_to_response('index.html')

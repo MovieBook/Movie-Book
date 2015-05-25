@@ -21,15 +21,7 @@
 
     <div id="content">
 
-    {% if messages %}
-    <div> class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-        {% block content %}This is the content area{% endblock %}
+    {% block content %}This is the content area{% endblock %}
 
     <div class="clearfix"></div>
     </div>
