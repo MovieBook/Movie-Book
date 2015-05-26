@@ -16,6 +16,7 @@
 
 
         <input type="submit" class="btn btn-lg btn-primary btn-block" value="Влез" />
+        {% csrf_token %}
       </form>
       <a href="{%url 'website:register' %}">
       <input class="btn btn-lg btn-primary btn-block" value="Регистрирай се" />
