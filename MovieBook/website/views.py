@@ -3,7 +3,9 @@ from django.contrib import auth
 from django.core.context_processors import csrf
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseNotFound
+from django.http import Http404
 from bs4 import BeautifulSoup
 import json
 import requests
@@ -82,7 +84,7 @@ def home(request):
         movie_id = get_id(movie_name)
         movie_info = get_info(movie_id)
         movie_trailer = get_trailer(movie_name)
-        return render(request, "loggedin.html", locals())
+        return render(request, "favourites.html", locals())
     else:
         c = {}
         c.update(csrf(request))
@@ -117,3 +119,8 @@ def register_success(request):
 
 def about(request):
     return render_to_response('about.html')
+
+
+@require_http_methods(["GET", "POST"])
+def favourites(requests):
+    return render_to_response("favourites.html")

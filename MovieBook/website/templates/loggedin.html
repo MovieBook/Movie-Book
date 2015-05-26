@@ -7,16 +7,6 @@
     <input type = "text" size = '30' name = "text" class = 'form-signin' placeholder = "Въведи филм">
     <input type = "submit" value = 'Търси филм' class="btn btn-default"/>
     </form>
-    <center><h2>Информация за филма</h2></center>
-    <table class = "table table-bordered">
-    {% for key, value in movie_info.items %}
-    <tr>
-        <td><center>{{key}}</center></td>
-        <td><center>{{value}}</center></td>
-    </tr>
-    {% endfor %}
-    </table>
-    <iframe width="840" height="550" src={{movie_trailer}} frameborder="0" allowfullscreen></iframe>
   <h3>Click <a href="{%url 'website:logout' %}">here</a> to logout.</h3>
 </center>
 {% endblock %}
