@@ -35,11 +35,6 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> master
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -92,9 +87,3 @@ docs/_build/
 
 # PyBuilder
 target/
-<<<<<<< HEAD
-
->>>>>>> master
-__pycache__
-=======
->>>>>>> master
