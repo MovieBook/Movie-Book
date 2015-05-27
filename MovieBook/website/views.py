@@ -40,24 +40,42 @@ def get_trailer(nam):
     return link_to_trailer
 
 
-def get_info(id):
+def get_info(id, namemovie):
     movie_id = str(id)
     info_request = requests.get("http://api.themoviedb.org/3/movie/{}?api_key=8f5d9e5ae1a7b93ba0d76d621a742501".format(movie_id))
     diction = info_request.json()
     new_dict = {}
     string = ""
+    api_key = 'api_key=8f5d9e5ae1a7b93ba0d76d621a742501'
+    result = requests.get(
+        'http://api.themoviedb.org/3/movie/'
+        + movie_id
+        + '/casts?'
+        + api_key
+    )
+    result = result.json()
+    stars = ""
     if 'title' in diction.keys():
-        for elem in ["title","original_title", "runtime", "genres", "release_date", "overview", "status", "vote_average"]:
-            if elem == "vote_average":
-                new_dict["rating"] = diction[elem]
-            elif elem == "genres":
-                for x in diction[elem]:
-                    string += x['name']
-                    string += " "
-                new_dict[elem] = string
-            else:
-                new_dict[elem] = diction[elem]
-        return new_dict
+        allowed_keys = ["title","original_title", "runtime", "genres", "release_date", "overview", "status", "vote_average"]
+        diction1 = {k: v for k, v in diction.items() if k in allowed_keys}
+        for el in result['cast']:
+            stars += el['name']
+            stars += ", "
+        stars = stars[:len(stars) - 2]
+        diction1['stars'] = stars
+        for x in diction1["genres"]:
+            string += x['name']
+            string += ", "
+        string = string[:len(string) - 2]
+        diction1['genres'] = string
+        diction1['rating'] = diction1['vote_average']
+        del diction1['vote_average']
+        diction1["trailer"] = get_trailer(namemovie)
+        IMAGE_URL = 'http://image.tmdb.org/t/p/w500'
+        url_to_img = IMAGE_URL + diction['poster_path']
+        diction1['cover'] = url_to_img
+        json1 = json.dumps(diction1)
+        return json1
     else:
         raise Http404("Не съществува такъв филм!")
 
@@ -85,7 +103,7 @@ def home(request):
     if request.POST:
         movie_name = request.POST.get("text")
         movie_id = get_id(movie_name)
-        movie_info = get_info(movie_id)
+        movie_info = get_info(movie_id, movie_name)
         movie_trailer = get_trailer(movie_name)
         return render(request, "favourites.html", locals())
     else:

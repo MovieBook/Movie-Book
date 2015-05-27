@@ -103,3 +103,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 IMAGES = '/static/images'
+AUTH_PROFILE_MODULE = 'website.UserProfile'
