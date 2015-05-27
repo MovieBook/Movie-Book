@@ -2,6 +2,13 @@
 
 {% block content %}
 <center>
+    <p>
+    <a href="{%url 'website:logged' %}"><input type = "submit" value = 'Назад' class="btn btn-default btn-lg"/></a>
+    <input type = "submit" value = 'Добави в любими'  size = "100" class="btn btn-default btn-lg"/>
+    <input type = "submit" value = 'Виж любимите си филми' class="btn btn-default btn-lg"/>
+    <input type = "submit" value = 'Премахни от любими' class="btn btn-default btn-lg"/>
+    <a href="{%url 'website:logout' %}"><input type = "submit" value = 'Излез от профила си' class="btn btn-default btn-lg"/></a>
+    </p>
     <center><h2>Информация за филма</h2></center>
     <table class = "table table-bordered">
     {% for key, value in movie_info.items %}
@@ -12,7 +19,6 @@
     {% endfor %}
     </table>
     <iframe width="840" height="550" src={{movie_trailer}} frameborder="0" allowfullscreen></iframe>
-    <p><a href="{%url 'website:logged' %}"><img src="/static/back-button.png"></a></p>
   <h3>Click <a href="{%url 'website:logout' %}">here</a> to logout.</h3>
 </center>
 {% endblock %}

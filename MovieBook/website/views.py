@@ -46,17 +46,20 @@ def get_info(id):
     diction = info_request.json()
     new_dict = {}
     string = ""
-    for elem in ["title","original_title", "runtime", "genres", "release_date", "overview", "status", "vote_average"]:
-        if elem == "vote_average":
-            new_dict["rating"] = diction[elem]
-        elif elem == "genres":
-            for x in diction[elem]:
-                string += x['name']
-                string += " "
-            new_dict[elem] = string
-        else:
-            new_dict[elem] = diction[elem]
-    return new_dict
+    if 'title' in diction.keys():
+        for elem in ["title","original_title", "runtime", "genres", "release_date", "overview", "status", "vote_average"]:
+            if elem == "vote_average":
+                new_dict["rating"] = diction[elem]
+            elif elem == "genres":
+                for x in diction[elem]:
+                    string += x['name']
+                    string += " "
+                new_dict[elem] = string
+            else:
+                new_dict[elem] = diction[elem]
+        return new_dict
+    else:
+        raise Http404("Не съществува такъв филм!")
 
 
 def login(request):
@@ -121,6 +124,9 @@ def about(request):
     return render_to_response('about.html')
 
 
-@require_http_methods(["GET", "POST"])
-def favourites(requests):
-    return render_to_response("favourites.html")
+@require_http_methods("POST")
+def favourites(request):
+    if request.POST:
+        return render_to_response("favourites.html")
+    else:
+        raise Http404("PAGE DOES NOT EXISTS")
