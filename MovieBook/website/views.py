@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseNotFound
 from django.http import Http404
 from bs4 import BeautifulSoup
+from .models import Movie, Actor, Genre
 import json
 import requests
 
@@ -75,7 +76,7 @@ def get_info(id, namemovie):
         url_to_img = IMAGE_URL + diction['poster_path']
         diction1['cover'] = url_to_img
         json1 = json.dumps(diction1)
-        return json1
+        return diction1
     else:
         raise Http404("Не съществува такъв филм!")
 
@@ -84,6 +85,11 @@ def login(request):
     c = {}
     c.update(csrf(request))
     return render_to_response('login.html', c)
+
+
+def add_movie(t, ov, rat, le, rel_d, st, orig_t, c, tr):
+    m = Movie(title=t, overview=ov, rating=str(rat), length=le, release_date=rel_d, status=st, original_title=orig_t, cover=c, trailer=tr)
+    m.save()
 
 
 def auth_view(request):
@@ -105,6 +111,8 @@ def home(request):
         movie_id = get_id(movie_name)
         movie_info = get_info(movie_id, movie_name)
         movie_trailer = get_trailer(movie_name)
+        movie_cover = movie_info['cover']
+        #movie_add = add_movie(movie_info['title'], movie_info['overview'], movie_info['rating'], movie_info['runtime'], movie_info['release_date'], movie_info['status'], movie_info['original_title'], movie_info['cover'], movie_info['trailer'])
         return render(request, "favourites.html", locals())
     else:
         c = {}

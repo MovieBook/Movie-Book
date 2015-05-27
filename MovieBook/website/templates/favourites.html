@@ -4,17 +4,20 @@
 <center>
     <p>
     <a href="{%url 'website:logged' %}"><input type = "submit" value = 'Назад' class="btn btn-default btn-lg"/></a>
-    <input type = "submit" value = 'Добави в любими'  size = "100" class="btn btn-default btn-lg"/>
+    <input type = "submit" id = "movie" value = 'Добави в любими' onclick={{movie_add}} size = "100" class="btn btn-default btn-lg"/>
     <input type = "submit" value = 'Виж любимите си филми' class="btn btn-default btn-lg"/>
     <input type = "submit" value = 'Премахни от любими' class="btn btn-default btn-lg"/>
     <a href="{%url 'website:logout' %}"><input type = "submit" value = 'Излез от профила си' class="btn btn-default btn-lg"/></a>
     </p>
     <center><h2>Информация за филма</h2></center>
+    <img src = "{{movie_cover}}">
     <table class = "table table-bordered">
     {% for key, value in movie_info.items %}
     <tr>
+    {% if key != 'cover' and key != 'trailer' %}
         <td><center>{{key}}</center></td>
         <td><center>{{value}}</center></td>
+    {% endif %}
     </tr>
     {% endfor %}
     </table>
