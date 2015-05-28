@@ -16,7 +16,7 @@ import json
 import requests
 
 
-def get_ids(name):
+def get_imdb_info(name):
     api_key = '&api_key=8f5d9e5ae1a7b93ba0d76d621a742501'
     title = name
     result = requests.get(
@@ -25,11 +25,11 @@ def get_ids(name):
     )
 
     result = result.json()
-    ids = []
+    info = []
     if 'results' in result.keys():
         for el in result["results"]:
-            ids.append(el["id"])
-        return ids
+            info.append({"id": el["id"], "cover": el['poster_path']})
+        return info
     raise Http404("Няма зададен филм!")
 
 
@@ -49,43 +49,58 @@ def get_trailer(nam):
     return link_to_trailer
 
 
-def get_info(id, namemovie):
-    movie_id = str(id)
-    info_request = requests.get("http://api.themoviedb.org/3/movie/{}?api_key=8f5d9e5ae1a7b93ba0d76d621a742501".format(movie_id))
-    diction = info_request.json()
-    string = ""
+def get_cool_movie_info(id):
+    print(id)
+    info = {}
+    info_request = requests.get("http://api.themoviedb.org/3/movie/{}?api_key=8f5d9e5ae1a7b93ba0d76d621a742501".format(str(id)))
+    result = info_request.json()
+    if result['title']:
+        allowed_keys = ["title","original_title", "runtime", "genres", "release_date", "overview", "status", "vote_average"]
+        info = {k: v for k, v in result.items() if k in allowed_keys}
+        genres = ""
+
+        for x in info["genres"]:
+            genres += x['name']
+            genres += ", "
+        genres = genres[:len(genres) - 2]
+
+        info['genres'] = genres
+        info['rating'] = info['vote_average']
+        del info['vote_average']
+
+        IMAGE_URL = 'http://image.tmdb.org/t/p/w500'
+        url_to_img = IMAGE_URL + str(result['poster_path'])
+        info['cover'] = url_to_img
+    return info
+
+
+def get_cast_info(id):
     api_key = 'api_key=8f5d9e5ae1a7b93ba0d76d621a742501'
     result = requests.get(
         'http://api.themoviedb.org/3/movie/'
-        + movie_id
+        + id
         + '/casts?'
         + api_key
     )
-    result = result.json()
     stars = ""
-    if 'title' in diction.keys():
-        allowed_keys = ["title","original_title", "runtime", "genres", "release_date", "overview", "status", "vote_average"]
-        diction1 = {k: v for k, v in diction.items() if k in allowed_keys}
-        for el in result['cast']:
-            stars += el['name']
-            stars += ", "
-        stars = stars[:len(stars) - 2]
-        diction1['stars'] = stars
-        for x in diction1["genres"]:
-            string += x['name']
-            string += ", "
-        string = string[:len(string) - 2]
-        diction1['genres'] = string
-        diction1['rating'] = diction1['vote_average']
-        del diction1['vote_average']
-        diction1["trailer"] = get_trailer(namemovie)
-        IMAGE_URL = 'http://image.tmdb.org/t/p/w500'
-        url_to_img = IMAGE_URL + diction['poster_path']
-        diction1['cover'] = url_to_img
-        json1 = json.dumps(diction1)
-        return diction1
-    else:
+    for el in result.json()['cast']:
+        stars += el['name']
+        stars += ", "
+    stars = stars[:len(stars) - 2]
+    return stars
+
+
+def get_info(id, namemovie):
+    cool_info = get_cool_movie_info(id)
+    if not cool_info:
         raise Http404("Не съществува такъв филм!")
+    cast_info = get_cast_info(id)
+
+    cool_info['stars'] = cast_info
+   
+    cool_info["trailer"] = get_trailer(namemovie)
+    
+    return json.dumps(cool_info)
 
 
 def main(request):
@@ -179,13 +194,22 @@ def about(request):
 def get_movies(request):
     if request.POST:
         movie_name = request.POST.get("text")
-        movie_ids = get_ids(movie_name)
+        movie_imdb_info = get_imdb_info(movie_name)
         movies_data = {}
-        for id in movie_ids:
+        for imdb_movie in movie_imdb_info:
+            id = str(imdb_movie['id'])
+            cover = imdb_movie['cover']
             movie_data = {}
-            movies_data[str(id)] = movie_data
-            movie_data['info'] = get_info(movie_id, movie_name)
+            movie_data['info'] = get_info(id, movie_name)
             movie_data['trailer'] = get_trailer(movie_name)
-            movie_data['cover'] = movie_info['cover']
+            movie_data['cover'] = cover
+            movies_data[id] = movie_data
 
-        return  return HttpResponse(json.dumps(movies_data), mimetype='application/javascript')
+        return HttpResponse(json.dumps(movies_data), mimetype='application/javascript')
+    else:
+        response_dict =  {"err" : "Oooops"}
+        return HttpResponse(json.dumps(response_dict), mimetype='application/javascript')
+
+@require_http_methods("POST")
+def favourites(request):
+    print("blah")

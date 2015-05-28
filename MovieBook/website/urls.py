@@ -13,5 +13,5 @@ urlpatterns = [
         views.register_success, name='register_success'),
     url(r'^about/$', views.about, name='about'),
     url(r'^favourites/$', views.favourites, name='favourites'),
-    url(r'^movies/$', view.get_movies, name="movies")
+    url(r'^movies/$', views.get_movies, name="movies")
 ]
