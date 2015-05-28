@@ -50,7 +50,6 @@ def get_trailer(nam):
 
 
 def get_cool_movie_info(id):
-    print(id)
     info = {}
     info_request = requests.get("http://api.themoviedb.org/3/movie/{}?api_key=8f5d9e5ae1a7b93ba0d76d621a742501".format(str(id)))
     result = info_request.json()
@@ -100,7 +99,7 @@ def get_info(id, namemovie):
 
     cool_info["trailer"] = get_trailer(namemovie)
 
-    return json.dumps(cool_info)
+    return cool_info
 
 
 def main(request):
