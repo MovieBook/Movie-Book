@@ -10,7 +10,7 @@
     <a href="{%url 'website:logout' %}"><input type = "submit" value = 'Излез от профила си' class="btn btn-default btn-lg"/></a>
     </p>
     <center><h2>Информация за филма</h2></center>
-    <img src = "{{movie_cover}}">
+    <img id = "rounded" src = "{{movie_cover}}">
     <table class = "table table-bordered">
     {% for key, value in movie_info.items %}
     <tr>
