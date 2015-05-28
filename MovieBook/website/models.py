@@ -14,7 +14,7 @@ class Movie(models.Model):
     title = models.CharField(max_length=200, unique=True)
     overview = models.CharField(max_length=1000)
     rating = models.FloatField()
-    length = models.TimeField()
+    length = models.CharField(max_length=100)
     release_date = models.CharField(max_length = 1000)
     status = models.CharField(max_length=50)
     original_title = models.CharField(max_length=200)

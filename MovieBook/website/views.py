@@ -20,10 +20,12 @@ def get_id(name):
     )
     result = result.json()
     dict_of_movies = dict()
-    for el in result["results"]:
-        dict_of_movies[el["title"]] = el["id"]
-        return dict_of_movies[el["title"]]
-
+    if 'results' in result.keys():
+        for el in result["results"]:
+            dict_of_movies[el["title"]] = el["id"]
+            return dict_of_movies[el["title"]]
+    else:
+        raise Http404("Няма зададен филм!")
 
 def get_trailer(nam):
     api_key = 'AIzaSyD4eZKe1HehOtJ7LVTqDjhKqnA2JpNzWSE'
@@ -45,7 +47,6 @@ def get_info(id, namemovie):
     movie_id = str(id)
     info_request = requests.get("http://api.themoviedb.org/3/movie/{}?api_key=8f5d9e5ae1a7b93ba0d76d621a742501".format(movie_id))
     diction = info_request.json()
-    new_dict = {}
     string = ""
     api_key = 'api_key=8f5d9e5ae1a7b93ba0d76d621a742501'
     result = requests.get(
@@ -88,7 +89,7 @@ def login(request):
 
 
 def add_movie(t, ov, rat, le, rel_d, st, orig_t, c, tr):
-    m = Movie(title=t, overview=ov, rating=str(rat), length=le, release_date=rel_d, status=st, original_title=orig_t, cover=c, trailer=tr)
+    m = Movie(title=t, overview=ov, rating=str(rat), length=str(le), release_date=rel_d, status=st, original_title=orig_t, cover=c, trailer=tr)
     m.save()
 
 
@@ -112,7 +113,7 @@ def home(request):
         movie_info = get_info(movie_id, movie_name)
         movie_trailer = get_trailer(movie_name)
         movie_cover = movie_info['cover']
-        #movie_add = add_movie(movie_info['title'], movie_info['overview'], movie_info['rating'], movie_info['runtime'], movie_info['release_date'], movie_info['status'], movie_info['original_title'], movie_info['cover'], movie_info['trailer'])
+        movie_add = add_movie(movie_info['title'], movie_info['overview'], movie_info['rating'], movie_info['runtime'], movie_info['release_date'], movie_info['status'], movie_info['original_title'], movie_info['cover'], movie_info['trailer'])
         return render(request, "favourites.html", locals())
     else:
         c = {}
@@ -153,6 +154,4 @@ def about(request):
 @require_http_methods("POST")
 def favourites(request):
     if request.POST:
-        return render_to_response("favourites.html")
-    else:
-        raise Http404("PAGE DOES NOT EXISTS")
+        return render(request, "favourites.html", locals())

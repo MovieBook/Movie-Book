@@ -33,7 +33,9 @@ $(document).ready(function(){
             return false;
         }
     $(function() {
-        $("#menu").accordion();
+        $("#movie").click(function(){
+            alert("Успешно добавен в любими!")
+        })
     });
 });
 
