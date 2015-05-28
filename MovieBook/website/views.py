@@ -97,9 +97,9 @@ def get_info(id, namemovie):
     cast_info = get_cast_info(id)
 
     cool_info['stars'] = cast_info
-   
+
     cool_info["trailer"] = get_trailer(namemovie)
-    
+
     return json.dumps(cool_info)
 
 
@@ -112,10 +112,10 @@ def ajax(request):
         y = socket.gethostbyname(x)
         response_dict = {}
         response_dict.update({'server_response': y})
-        return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
+        return HttpResponse(simplejson.dumps(response_dict), content_type='application/json')
     else:
         response_dict =  {"err" : "Oooops"}
-        return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
+        return HttpResponse(simplejson.dumps(response_dict), content_type='application/json')
 
 def login(request):
     c = {}
@@ -205,10 +205,10 @@ def get_movies(request):
             movie_data['cover'] = cover
             movies_data[id] = movie_data
 
-        return HttpResponse(json.dumps(movies_data), mimetype='application/javascript')
+        return HttpResponse(json.dumps(movies_data), content_type='application/json')
     else:
         response_dict =  {"err" : "Oooops"}
-        return HttpResponse(json.dumps(response_dict), mimetype='application/javascript')
+        return HttpResponse(json.dumps(response_dict), content_type='application/json')
 
 @require_http_methods("POST")
 def favourites(request):
