@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 import json
 import requests
 
+
 def get_id(name):
     api_key = '&api_key=8f5d9e5ae1a7b93ba0d76d621a742501'
     title = name
@@ -42,7 +43,8 @@ def get_trailer(nam):
 
 def get_info(id, namemovie):
     movie_id = str(id)
-    info_request = requests.get("http://api.themoviedb.org/3/movie/{}?api_key=8f5d9e5ae1a7b93ba0d76d621a742501".format(movie_id))
+    info_request = requests.get(
+        "http://api.themoviedb.org/3/movie/{}?api_key=8f5d9e5ae1a7b93ba0d76d621a742501".format(movie_id))
     diction = info_request.json()
     new_dict = {}
     string = ""
@@ -56,7 +58,8 @@ def get_info(id, namemovie):
     result = result.json()
     stars = ""
     if 'title' in diction.keys():
-        allowed_keys = ["title","original_title", "runtime", "genres", "release_date", "overview", "status", "vote_average"]
+        allowed_keys = ["title", "original_title", "runtime", "genres",
+                        "release_date", "overview", "status", "vote_average"]
         diction1 = {k: v for k, v in diction.items() if k in allowed_keys}
         for el in result['cast']:
             stars += el['name']
@@ -75,7 +78,7 @@ def get_info(id, namemovie):
         url_to_img = IMAGE_URL + diction['poster_path']
         diction1['cover'] = url_to_img
         json1 = json.dumps(diction1)
-        return json1
+        return diction1
     else:
         raise Http404("Не съществува такъв филм!")
 
