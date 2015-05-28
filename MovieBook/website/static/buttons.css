@@ -1,6 +1,6 @@
-<style>
-#rounded {
-    border: 2px solid #8AC007;
-    border-radius: 10px;
+#r {
+    width: 300px;
+    height: 430px;
+    border-radius: 20px;
 }
-</style>
+

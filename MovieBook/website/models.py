@@ -20,6 +20,7 @@ class Movie(models.Model):
     original_title = models.CharField(max_length=200)
     cover = models.CharField(max_length=300)
     trailer = models.CharField(max_length=300)
+    favourite = models.PositiveIntegerField(default=0)
     user = models.ManyToManyField(User)
     genre_id = models.ManyToManyField(Genre)
     actor_id = models.ManyToManyField(Actor)
