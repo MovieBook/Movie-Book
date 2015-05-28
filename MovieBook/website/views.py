@@ -93,6 +93,15 @@ def add_movie(t, ov, rat, le, rel_d, st, orig_t, c, tr):
     m.save()
 
 
+def movie_check(t, movie_info):
+    m = Movie.objects.filter(title=t)
+    count = 0
+    for i in m:
+        count += 1
+    if count == 0:
+        add_movie(movie_info['title'], movie_info['overview'], movie_info['rating'], movie_info['runtime'], movie_info['release_date'], movie_info['status'], movie_info['original_title'], movie_info['cover'], movie_info['trailer'])
+
+
 def auth_view(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
@@ -113,7 +122,7 @@ def home(request):
         movie_info = get_info(movie_id, movie_name)
         movie_trailer = get_trailer(movie_name)
         movie_cover = movie_info['cover']
-        movie_add = add_movie(movie_info['title'], movie_info['overview'], movie_info['rating'], movie_info['runtime'], movie_info['release_date'], movie_info['status'], movie_info['original_title'], movie_info['cover'], movie_info['trailer'])
+        movie_add = movie_check(movie_info['title'], movie_info)
         return render(request, "favourites.html", locals())
     else:
         c = {}
