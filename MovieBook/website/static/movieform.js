@@ -21,7 +21,7 @@ $(document).ready(function(){
 
             $.ajax({
                 type:"POST",
-                url:"http://api.themoviedb.org/3/movie/{}?api_key=8f5d9e5ae1a7b93ba0d76d621a742501".format(movieID),
+                url:"/movies".format(movieID),
                 data: {"movie":movieID},
                 success: function(result) {
                     $("#movie-" + movieID).hide();

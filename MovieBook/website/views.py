@@ -8,24 +8,30 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.http import Http404
 from bs4 import BeautifulSoup
 from .models import Movie, Actor, Genre
+from django.http import *
+from django.template import RequestContext
+
+import socket
 import json
 import requests
 
-def get_id(name):
+
+def get_ids(name):
     api_key = '&api_key=8f5d9e5ae1a7b93ba0d76d621a742501'
     title = name
     result = requests.get(
         'http://api.themoviedb.org/3/search/movie?query=' + title
         + api_key
     )
+
     result = result.json()
-    dict_of_movies = dict()
+    ids = []
     if 'results' in result.keys():
         for el in result["results"]:
-            dict_of_movies[el["title"]] = el["id"]
-            return dict_of_movies[el["title"]]
-    else:
-        raise Http404("Няма зададен филм!")
+            ids.append(el["id"])
+        return ids
+    raise Http404("Няма зададен филм!")
+
 
 def get_trailer(nam):
     api_key = 'AIzaSyD4eZKe1HehOtJ7LVTqDjhKqnA2JpNzWSE'
@@ -82,6 +88,20 @@ def get_info(id, namemovie):
         raise Http404("Не съществува такъв филм!")
 
 
+def main(request):
+   return render_to_response('favourites.html', context_instance=RequestContext(request))
+
+def ajax(request):
+    if request.POST.has_key('client_response'):
+        x = request.POST['client_response']
+        y = socket.gethostbyname(x)
+        response_dict = {}
+        response_dict.update({'server_response': y})
+        return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
+    else:
+        response_dict =  {"err" : "Oooops"}
+        return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
+
 def login(request):
     c = {}
     c.update(csrf(request))
@@ -100,7 +120,8 @@ def movie_check(t, movie_info):
         count += 1
     if count == 0:
         add_movie(movie_info['title'], movie_info['overview'], movie_info['rating'], movie_info['runtime'], movie_info['release_date'], movie_info['status'], movie_info['original_title'], movie_info['cover'], movie_info['trailer'])
-
+    else:
+        return m
 
 def auth_view(request):
     username = request.POST.get('username', '')
@@ -117,13 +138,7 @@ def auth_view(request):
 @login_required(login_url="website:login")
 def home(request):
     if request.POST:
-        movie_name = request.POST.get("text")
-        movie_id = get_id(movie_name)
-        movie_info = get_info(movie_id, movie_name)
-        movie_trailer = get_trailer(movie_name)
-        movie_cover = movie_info['cover']
-        movie_add = movie_check(movie_info['title'], movie_info)
-        return render(request, "favourites.html", locals())
+        return redirect('website:favourites')
     else:
         c = {}
         c.update(csrf(request))
@@ -161,6 +176,16 @@ def about(request):
 
 
 @require_http_methods("POST")
-def favourites(request):
+def get_movies(request):
     if request.POST:
-        return render(request, "favourites.html", locals())
+        movie_name = request.POST.get("text")
+        movie_ids = get_ids(movie_name)
+        movies_data = {}
+        for id in movie_ids:
+            movie_data = {}
+            movies_data[str(id)] = movie_data
+            movie_data['info'] = get_info(movie_id, movie_name)
+            movie_data['trailer'] = get_trailer(movie_name)
+            movie_data['cover'] = movie_info['cover']
+
+        return  return HttpResponse(json.dumps(movies_data), mimetype='application/javascript')
