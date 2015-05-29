@@ -23,6 +23,8 @@ class Movie(models.Model):
     user = models.ManyToManyField(User)
     # genre_id = models.ManyToManyField(Genre)
     # actor_id = models.ManyToManyField(Actor)
+    genres = models.CharField(max_length=300)
+    actors = models.CharField(max_length=300, default='none')
 
 
 class Favourite(models.Model):
