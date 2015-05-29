@@ -1,4 +1,6 @@
 website/static/lib
+../node-modules
+website/static/css/.sass-cache
 
 # Compiled source #
 ###################
