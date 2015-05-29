@@ -4,13 +4,15 @@
 <center>
     <p>
     <a href="{%url 'website:logged' %}"><input type = "submit" value = 'Назад' class="btn btn-default btn-lg"/></a>
-    <input type = "submit" id = "d" value = 'Добави в любими'  size = "100" class="btn btn-default btn-lg"/>
-    <input type = "submit" value = 'Виж любимите си филми' class="btn btn-default btn-lg"/>
+    <input type = "submit" id ="d" value = 'Добави в любими'  size = "100" class="btn btn-default btn-lg"/>
     <input type = "submit" id = "rem" value = 'Премахни от любими' class="btn btn-default btn-lg"/>
     <a href="{%url 'website:logout' %}"><input type = "submit" value = 'Излез от профила си' class="btn btn-default btn-lg"/></a>
     </p>
     <center><h2>Информация за филма</h2></center>
+    <div class="container-left">
     <p><img id = "r" alt = "Cover" src = "{{movie_cover}}"></p>
+    </div>
+    <div class="container-right">
     <table class = "table table-hover">
     {% for key, value in movie_info.items %}
     <tr>
@@ -18,7 +20,10 @@
     </tr>
     {% endfor %}
     </table>
-    <iframe width="840" height="550" src={{movie_trailer}} frameborder="0" allowfullscreen></iframe>
-    <br><br>
+    </div>
+    <div class="container-left">
+    <iframe width="300" height="250" src={{movie_trailer}} frameborder="0" allowfullscreen></iframe>
+</div>
 </center>
+
 {% endblock %}
