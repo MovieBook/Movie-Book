@@ -11,7 +11,7 @@
   {% endif %}
 
   <div class="container form-signin">
-	<form action="{%url 'website:register' %}">{% csrf_token %}
+	<form method="post" action="{%url 'website:register' %}">{% csrf_token %}
 		 <h4><center>Sign up</center></h4>
 	 	<div class="form-group">
 			<label for="username">Username:</label>

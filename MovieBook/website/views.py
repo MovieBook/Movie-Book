@@ -97,25 +97,11 @@ def get_info(id, namemovie):
 
     cool_info['stars'] = cast_info
 
-    cool_info["trailer"] = get_trailer(namemovie)
-
     return cool_info
 
 
 def main(request):
    return render_to_response('favourites.html', context_instance=RequestContext(request))
-
-
-def ajax(request):
-    if request.POST.has_key('client_response'):
-        x = request.POST['client_response']
-        y = socket.gethostbyname(x)
-        response_dict = {}
-        response_dict.update({'server_response': y})
-        return HttpResponse(simplejson.dumps(response_dict), content_type='application/json')
-    else:
-        response_dict =  {"err" : "Oooops"}
-        return HttpResponse(simplejson.dumps(response_dict), content_type='application/json')
 
 
 def login(request):
@@ -146,7 +132,9 @@ def pull_db_name(moviename):
 
 
 def check_db_for_movie(movname):
-    mov = Movie.objects.get(title__iexact=movname)
+    print(movname)
+    mov = Movie.objects.filter(title=movname)
+    print(mov)
     if mov:
         return mov
     return False
@@ -175,7 +163,7 @@ def home(request):
 
 
 def invalid_login(request):
-    return render_to_response('invalid_login.html')
+    return render_to_response('loggedin.html')
 
 
 def logout(request):
@@ -213,17 +201,15 @@ def get_movies(request):
             movies_data = {}
             for imdb_movie in movie_imdb_info:
                 id = str(imdb_movie['id'])
-                cover = imdb_movie['cover']
                 movie_data = {}
                 movie_data['info'] = get_info(id, movie_name)
                 movie_data['trailer'] = get_trailer(movie_name)
-                movie_data['cover'] = cover
                 movies_data[id] = movie_data
-            return HttpResponse(json.dumps(movies_data), content_type='application/json')
+            return render_to_response('favourites.html', {"movies":movies_data})
         return check_db_for_movie(movie_name)
     else:
         response_dict =  {"err" : "Oooops"}
-        return HttpResponse(json.dumps(response_dict), content_type='application/json')
+        return render_to_response('favourites.html', response_dict)
 
 
 @require_http_methods("POST")

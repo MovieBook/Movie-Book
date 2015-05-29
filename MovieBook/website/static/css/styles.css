@@ -13,11 +13,25 @@ a:hover {
   text-decoration: none;
   color: navy; }
 
-.container.form-signin, .about-div {
+.container.form-signin, .about-div, .row {
   box-shadow: 0 0 10px #eee;
   padding: 20px; }
 
 .form-signin .btn {
   margin-top: 20px; }
+
+img {
+  max-width: 300px; }
+
+.row {
+  margin-bottom: 30px; }
+
+table {
+  border: 1px solid #eee;
+  border-collapse: collapse; }
+  table td {
+    border-left: 1px solid #eee; }
+    table td:first-child {
+      border-left: none; }
 
 /*# sourceMappingURL=styles.css.map */

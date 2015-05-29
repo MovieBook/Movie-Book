@@ -1,62 +1,56 @@
 {% extends "base.html" %}
 
+{% block header %}
+{% include "home-header.html" %}
+{% endblock %}
+
 {% block content %}
 <center>
-    <p>
-    <a href="{%url 'website:logged' %}"><input type = "submit" value = 'Назад' class="btn btn-default btn-lg"/></a>
-    <input type = "submit" id = "movie" value = 'Добави в любими' size = "100" class="btn btn-default btn-lg"/>
-    <input type = "submit" value = 'Виж любимите си филми' class="btn btn-default btn-lg"/>
-    <input type = "submit" value = 'Премахни от любими' class="btn btn-default btn-lg"/>
-    <a href="{%url 'website:logout' %}"><input type = "submit" value = 'Излез от профила си' class="btn btn-default btn-lg"/></a>
-    </p>
-    <center><h2>Информация за филма</h2></center>
-    <p>
-        <img id = "r" alt = "Cover" src = "{{movie_cover}}">
-    </p>
-    <table class = "table table-hover">
-    {% for key, value in movie_info.items %}
-    <tr>
-    {% if key != 'cover' and key != 'trailer' %}
-        {% if key == 'release_date' %}
-            <td><center>Премиера</center></td>
-            <td><center>{{value}}</center></td>
-        {% endif %}
-        {% if key == 'genres' %}
-            <td><center>Жанр</center></td>
-            <td><center>{{value}}</center></td>
-        {% endif %}
-        {% if key == 'rating' %}
-            <td><center>Рейтинг</center></td>
-            <td><center>{{value}}</center></td>
-        {% endif %}
-        {% if key == 'stars' %}
-            <td><center>В главните роли</center></td>
-            <td><center>{{value}}</center></td>
-        {% endif %}
-        {% if key == 'overview' %}
-            <td><center>Резюме</center></td>
-            <td><center>{{value}}</center></td>
-        {% endif %}
-        {% if key == 'original_title' %}
-            <td><center>Оригинално заглавие</center></td>
-            <td><center>{{value}}</center></td>
-        {% endif %}
-        {% if key == 'status' %}
-            <td><center>Състояние</center></td>
-            <td><center>{{value}}</center></td>
-        {% endif %}
-        {% if key == 'title' %}
-            <td><center>Заглавие</center></td>
-            <td><center>{{value}}</center></td>
-        {% endif %}
-        {% if key == 'runtime' %}
-            <td><center>Времетраене</center></td>
-            <td><center>{{value}}</center></td>
-        {% endif %}
-    {% endif %}
-    </tr>
+
+    {% for key, value in movies.items %}
+    <div class="row content-fluid">
+        <h2>{{value.info.title}} </h2>
+        <hr>
+        <div class="col-md-4">
+            <img class="img-thumbnail" alt = "Cover" src = "{{ value.info.cover}}">
+            <div class="capture">
+                <input id = "movie" value = 'Добави в любими' class="btn btn-default btn-lg btn-block"/>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <table class = "table table-hover">
+            <tr>
+                <td>Оригинално заглавие</td>
+                <td>{{value.info.original_title}}</td>
+                
+            </tr><tr>
+                <td>Жанр</td>
+                <td>{{value.info.genres}}</td>
+            </tr><tr>
+                <td>Рейтинг</td>
+                <td>{{value.info.value}}</td>
+            </tr><tr>
+            <td>Времетраене</td>
+                <td>{{value.info.runtime}}</td>
+            </tr><tr>
+                <td>Резюме</td>
+                <td>{{value.info.overview}}</td>
+            </tr><tr>
+                <td>Премиера</td>
+                <td>{{value.info.release_date}}</td>
+            </tr><tr>
+               <td>В главните роли</td>
+                <td>{{value.info.stars}}</td>
+            </tr><tr>
+                <td>Състояние</td>
+                <td>{{value.info.status}}</td> 
+            </tr><tr>
+                <td>Трейлър</td>
+                <td><iframe max-width="400" max-height="350" src={{value.trailer}} frameborder="0" allowfullscreen></iframe></td> 
+            </tr>
+            </table>
+        </div>
+    </div>
     {% endfor %}
-    </table>
-    <iframe width="840" height="550" src={{movie_trailer}} frameborder="0" allowfullscreen></iframe>
 </center>
 {% endblock %}

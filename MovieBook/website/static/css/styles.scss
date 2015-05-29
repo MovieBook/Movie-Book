@@ -20,11 +20,30 @@ a:hover {
 	color: navy;
 }
 
-.container.form-signin, .about-div {
+.container.form-signin, .about-div, .row {
 	box-shadow: 0 0 10px #eee;
 	padding: 20px;
 }
 
 .form-signin .btn{
 	margin-top: 20px;
+}
+
+img {
+	max-width: 300px;
+}
+
+.row {
+	margin-bottom: 30px;
+}
+
+table { 
+	border: 1px solid #eee; 
+	border-collapse: collapse;
+	td { 
+		border-left: 1px solid #eee; 
+		&:first-child { 
+			border-left: none; 
+		}
+	} 
 }
