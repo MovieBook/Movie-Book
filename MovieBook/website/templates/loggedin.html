@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
+{% block header %}
+{% include "home-header.html" %}
+{% endblock %}
+
 {% block content %}
-<center>
-  <h2>Добре дошъл в системата!</h2>
-    <form method = "POST" action="{%url 'website:movies' %}">{% csrf_token %}
-    <input type = "text" size = '30' name = "text" class = 'form-signin' placeholder = "Въведи филм">
-    <input type = "submit" value = 'Търси филм' class="btn btn-default"/>
+<div class="container form-signin">
+  <h3>Moviebook search</h3>
+    <form action="{%url 'website:movies' %}">{% csrf_token %}
+    	<div class="form-group">
+    		<input type = "text" size = '30' name = "text" class = 'form-control' placeholder = "Въведи филм">
+    		<input type = "submit" value = 'Търси филм' class="btn btn-success btn-block"/>
+    	</div>
     </form>
-  <h3>Цъкни <a href="{%url 'website:logout' %}">тук</a> , за да излезеш.</h3>
-</center>
+</div>
 {% endblock %}

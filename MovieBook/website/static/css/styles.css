@@ -1,0 +1,23 @@
+.container {
+  font-family: Verdana; }
+
+.navbar-nav {
+  padding-top: 10px; }
+  .navbar-nav a {
+    margin-left: 20px; }
+
+@media (min-width: 600px) {
+  .form-signin {
+    width: 60%; } }
+a:hover {
+  text-decoration: none;
+  color: navy; }
+
+.container.form-signin, .about-div {
+  box-shadow: 0 0 10px #eee;
+  padding: 20px; }
+
+.form-signin .btn {
+  margin-top: 20px; }
+
+/*# sourceMappingURL=styles.css.map */
