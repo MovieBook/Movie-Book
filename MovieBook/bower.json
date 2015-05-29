@@ -17,7 +17,7 @@
   "dependencies": {
     "bootstrap": "~3.3.4",
     "fontawesome": "~4.3.0",
-    "fullpage.js": "~2.6.5"
+    "fullpage.js": "~2.6.5",
     "q": "1.x",
     "jquery-ui": "~1.11.4"
   }

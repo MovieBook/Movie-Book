@@ -105,6 +105,7 @@ def get_info(id, namemovie):
 def main(request):
    return render_to_response('favourites.html', context_instance=RequestContext(request))
 
+
 def ajax(request):
     if request.POST.has_key('client_response'):
         x = request.POST['client_response']
@@ -115,6 +116,7 @@ def ajax(request):
     else:
         response_dict =  {"err" : "Oooops"}
         return HttpResponse(simplejson.dumps(response_dict), content_type='application/json')
+
 
 def login(request):
     c = {}
@@ -136,6 +138,19 @@ def movie_check(t, movie_info):
         add_movie(movie_info['title'], movie_info['overview'], movie_info['rating'], movie_info['runtime'], movie_info['release_date'], movie_info['status'], movie_info['original_title'], movie_info['cover'], movie_info['trailer'])
     else:
         return m
+
+
+def pull_db_name(moviename):
+    mov_title = Movie.objects.get(title=moviename)
+    return mov_title
+
+
+def check_db_for_movie(movname):
+    mov = Movie.objects.get(title__iexact=movname)
+    if mov:
+        return mov
+    return False
+
 
 def auth_view(request):
     username = request.POST.get('username', '')
@@ -193,21 +208,23 @@ def about(request):
 def get_movies(request):
     if request.POST:
         movie_name = request.POST.get("text")
-        movie_imdb_info = get_imdb_info(movie_name)
-        movies_data = {}
-        for imdb_movie in movie_imdb_info:
-            id = str(imdb_movie['id'])
-            cover = imdb_movie['cover']
-            movie_data = {}
-            movie_data['info'] = get_info(id, movie_name)
-            movie_data['trailer'] = get_trailer(movie_name)
-            movie_data['cover'] = cover
-            movies_data[id] = movie_data
-
-        return HttpResponse(json.dumps(movies_data), content_type='application/json')
+        if not check_db_for_movie(movie_name):
+            movie_imdb_info = get_imdb_info(movie_name)
+            movies_data = {}
+            for imdb_movie in movie_imdb_info:
+                id = str(imdb_movie['id'])
+                cover = imdb_movie['cover']
+                movie_data = {}
+                movie_data['info'] = get_info(id, movie_name)
+                movie_data['trailer'] = get_trailer(movie_name)
+                movie_data['cover'] = cover
+                movies_data[id] = movie_data
+            return HttpResponse(json.dumps(movies_data), content_type='application/json')
+        return check_db_for_movie(movie_name)
     else:
         response_dict =  {"err" : "Oooops"}
         return HttpResponse(json.dumps(response_dict), content_type='application/json')
+
 
 @require_http_methods("POST")
 def favourites(request):
