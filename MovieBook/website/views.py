@@ -82,6 +82,29 @@ def get_info(id, namemovie):
         raise Http404("Не съществува такъв филм!")
 
 
+def movie_check(t, movie_info):
+    m = Movie.objects.filter(title=t)
+    count = 0
+    for i in m:
+        count += 1
+    if count == 0:
+        add_movie(movie_info['title'], movie_info['overview'], movie_info['rating'], movie_info['runtime'], movie_info['release_date'], movie_info['status'], movie_info['original_title'], movie_info['cover'], movie_info['trailer'])
+    else:
+        return m
+
+
+def add_movie(t, ov, rat, le, rel_d, st, orig_t, c, tr):
+    m = Movie(title=t, overview=ov, rating=str(rat), length=str(le), release_date=rel_d, status=st, original_title=orig_t, cover=c, trailer=tr)
+    m.save()
+
+
+def check_db_for_movie(movname):
+    mov = Movie.objects.get(title__iexact=movname)
+    if mov:
+        return mov
+    return False
+
+
 def login(request):
     c = {}
     c.update(csrf(request))
@@ -103,12 +126,7 @@ def auth_view(request):
 @login_required(login_url="website:login")
 def home(request):
     if request.POST:
-        movie_name = request.POST.get("text")
-        movie_id = get_id(movie_name)
-        movie_info = get_info(movie_id, movie_name)
-        movie_trailer = get_trailer(movie_name)
-        movie_cover = movie_info['cover']
-        return render(request, "favourites.html", locals())
+        return redirect('website:favourites')
     else:
         c = {}
         c.update(csrf(request))
@@ -148,6 +166,12 @@ def about(request):
 @require_http_methods("POST")
 def favourites(request):
     if request.POST:
-        return render_to_response("favourites.html")
+        movie_name = request.POST.get("text")
+        movie_id = get_id(movie_name)
+        movie_info = get_info(movie_id, movie_name)
+        movie_trailer = get_trailer(movie_name)
+        movie_cover = movie_info['cover']
+        add_movie(movie_info['title'], movie_info['overview'], movie_info['rating'], movie_info['runtime'], movie_info['release_date'], movie_info['status'], movie_info['original_title'], movie_info['cover'], movie_info['trailer'])
+        return render(request, "favourites.html", locals())
     else:
         raise Http404("PAGE DOES NOT EXISTS")
