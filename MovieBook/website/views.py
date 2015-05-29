@@ -4,10 +4,10 @@ from django.core.context_processors import csrf
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from django.http import HttpResponse, HttpResponseNotFound
+# from django.http import HttpResponse, HttpResponseNotFound
 from django.http import Http404
-from bs4 import BeautifulSoup
-import json
+# from bs4 import BeautifulSoup
+# import json
 import requests
 
 
@@ -46,7 +46,6 @@ def get_info(id, namemovie):
     info_request = requests.get(
         "http://api.themoviedb.org/3/movie/{}?api_key=8f5d9e5ae1a7b93ba0d76d621a742501".format(movie_id))
     diction = info_request.json()
-    new_dict = {}
     string = ""
     api_key = 'api_key=8f5d9e5ae1a7b93ba0d76d621a742501'
     result = requests.get(
@@ -77,7 +76,7 @@ def get_info(id, namemovie):
         IMAGE_URL = 'http://image.tmdb.org/t/p/w500'
         url_to_img = IMAGE_URL + diction['poster_path']
         diction1['cover'] = url_to_img
-        json1 = json.dumps(diction1)
+        # json1 = json.dumps(diction1)
         return diction1
     else:
         raise Http404("Не съществува такъв филм!")
@@ -108,6 +107,7 @@ def home(request):
         movie_id = get_id(movie_name)
         movie_info = get_info(movie_id, movie_name)
         movie_trailer = get_trailer(movie_name)
+        movie_cover = movie_info['cover']
         return render(request, "favourites.html", locals())
     else:
         c = {}

@@ -10,15 +10,14 @@
     <a href="{%url 'website:logout' %}"><input type = "submit" value = 'Излез от профила си' class="btn btn-default btn-lg"/></a>
     </p>
     <center><h2>Информация за филма</h2></center>
-    <table class = "table table-bordered">
+    <p><img id = "r" alt = "Cover" src = "{{movie_cover}}"></p>
+    <table class = "table table-hover">
     {% for key, value in movie_info.items %}
     <tr>
-        <td><center>{{key}}</center></td>
-        <td><center>{{value}}</center></td>
+        {% if key != 'cover' and key != 'trailer' %} {% if key == 'release_date' %} <td><center>Премиера</center></td> <td><center>{{value}}</center></td> {% endif %} {% if key == 'genres' %} <td><center>Жанр</center></td> <td><center>{{value}}</center></td> {% endif %} {% if key == 'rating' %} <td><center>Рейтинг</center></td> <td><center>{{value}}</center></td> {% endif %} {% if key == 'stars' %} <td><center>В главните роли</center></td> <td><center>{{value}}</center></td> {% endif %} {% if key == 'overview' %} <td><center>Резюме</center></td> <td><center>{{value}}</center></td> {% endif %} {% if key == 'original_title' %} <td><center>Оригинално заглавие</center></td> <td><center>{{value}}</center></td> {% endif %} {% if key == 'status' %} <td><center>Състояние</center></td> <td><center>{{value}}</center></td> {% endif %} {% if key == 'title' %} <td><center>Заглавие</center></td> <td><center>{{value}}</center></td> {% endif %} {% if key == 'runtime' %} <td><center>Времетраене</center></td> <td><center>{{value}}</center></td> {% endif %} {% endif %}
     </tr>
     {% endfor %}
     </table>
     <iframe width="840" height="550" src={{movie_trailer}} frameborder="0" allowfullscreen></iframe>
-  <h3>Click <a href="{%url 'website:logout' %}">here</a> to logout.</h3>
 </center>
 {% endblock %}
