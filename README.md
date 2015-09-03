@@ -1,4 +1,13 @@
 # Movie-Book
+
+## How to run:
+
+- Clone the repository.
+- Run "pip install requirements.txt" in the console/terminal.
+- Make the migrations.
+- Run "python manage.py runserver"
+- Go to the given link and enjoy"
+
 (Моля ако някой има възражения или идеи ,след като редактира файла да въведе името си и датата на която е направил модификацията за да няма
 объркване)
 Какво ще правим:
